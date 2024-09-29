@@ -42,3 +42,34 @@ So we will introduce tools to simplify those tasks such as:
 - group of capture
 
 Those tools allow to write more compact regex and find more diverse informations.
+
+
+
+## String character classes
+
+**String classes are used to represent a group of characters in a concise way**. 
+
+A regex  defining a string class starts and finish by **[]**.
+
+It can be defined in an:
+- **extensive** way: we list all the characters to find in a text between [] like [aZ6] to dectect a, Z, or 6.
+- **intensive** way: if we want to retrieve a structured sequence, we specify the first and last character with - in the middle. [a-d] to find a,b,c,d.
+- **negative** way: to **exclude** characters we place the character **^** before the chracters. [^aZ]] to find everthing except a or Z.
+- **union** of classes: **concatenating** character classes like [a-zA-Z] to detect all small and capital letters.
+
+_Example_: 
+- Let's define a regex to detect all capital letters.
+- Find all in text
+
+```python
+r =re.compile(r"[A-Z]")
+              
+r.findall(txt)
+>>>['A','N']
+```
+
+
+
+![Alt text](01_character_classes.png)
+
+![CheatSheet](01_cheatSheet.png)
