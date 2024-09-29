@@ -124,3 +124,104 @@ Here a list of shortcuts
 
 ![ShortCuts](./Images/01_shortcuts_regex.png)
 
+
+
+- Identify adverbs using shortcuts.
+
+  ```python
+  txt = "Apparemment, Philippe n'est chez lui. Mais, étonnamment, il n'est pas en chemin non plus. Il roule vers une autre destination"
+
+  r = re.compile(r"\w+ment") # regex made of at least a letter and then the pattern ment.
+ 
+
+print(r.findall(txt))
+
+​
+
+>>> ['Apparemment', 'étonnamment']
+```
+
+- Identify a pattern in the email address and compile a regex.
+
+```python
+txt = 'Georges98@yahoo.com \n coucou.com \n grégoire.richon@apple.com\n constitution@justice \n sarkozy@élysée.fr'
+r = re.compile(r"[A-Za-z0-9\.\?éà]+@[a-zA-Zéà]+\.[a-z]{2,4}")
+
+```
+I think \. means you put . as a special character
+
+
+## Metacharacters.
+
+Metacharacters are **symbols with a specific** meaning in the building of a regex.
+
+![Metacharacters](./Images/01_metacharacters.png)
+
+
+To call a character and not the function we need to put \ before like \. or \$.
+
+With metacharacters find the link html present in txt
+```python
+txt = 'https://www.google.com/ \n http://www.safari.fr/data-science'
+
+### Insérez votre code
+
+r = re.compile(r"https?://w{3}\.[A-Za-z0-9\.\-/]+")
+r.findall(txt)
+```
+
+## Group capture
+
+It forms group and subgroups to check the presence of a specific pattern. It is written betwween parenthesis. (ab)+ would detect ab,abab,ababab
+
+(ab) will detect **paterns**
+[ab] will detect **strings/characters**.
+
+It can also be used quantifiers with groups.
+
+![Group_capture](./Images/01_regex_group_capture.png)
+
+
+
+
+
+## Summary
+
+On a pu voir qu'il existait ainsi de nombreux schémas différents pour décrire une regex :
+
+- [a-zA-Z0-9] détecte l'ensemble des lettres majuscules ou minuscules et les chiffres
+  - [abc145] détecte les caractères a, b, c, 1,4 ou 5.
+
+    On peut aussi intégrer des caractères spéciaux, mais pour cela on doit les introduire avec un '\', comme par exemple
+
+    - [a-zA-Z0-9\.\?] détecte, en plus des lettres et chiffres, les '.' et les '?'.
+
+    On peut également utiliser des métacaractères pour pouvoir identifier plus précisémment ce que nous voulons, comme :
+
+    - [^A-Z] détecte TOUT à l'exception des lettres majuscules.
+    - tion$ détecte les tion en fin de chaine, i.e fin de string ou avant un renvoi à la ligne.
+    - ^je détecte les chaines de caractères commençant par je (comme jeux, jeudi...).
+
+    Les groupes de captures servent quant à eux à capturer les éléments entre parenthèse selon leur présence ou non dans le texte :
+
+    - o([a-z]) détecte uniquement la lettre suivant la lettre 'o'.
+
+
+```python
+txt = 'A a - § é 8 1 attraction. Potion'
+
+print("Pour txt, [a-zA-Z0-9] détecte ", re.findall(r"[a-zA-Z0-9]",txt))
+
+print("Pour txt, [abc145] détecte ", re.findall(r"[abc145]",txt))
+
+print("Pour txt, [a-zA-Z0-9\.\?]  détecte ", re.findall(r"[a-zA-Z0-9\.\-]",txt))
+
+print("Pour txt, [^A-Z] détecte ", re.findall(r"[^A-Z]",txt))
+
+print("Pour txt, tion$ détecte ", re.findall(r"tion$",txt))
+
+print("Pour txt, o([a-z]) détecte ", re.findall(r"o([a-z])",txt))
+```
+
+Have a look to regex101.com to check your regex.
+
