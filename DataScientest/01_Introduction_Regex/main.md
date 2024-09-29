@@ -72,4 +72,55 @@ r.findall(txt)
 
 ![Alt text](./Images/01_character_classes.png)
 
+Below a cheat sheet of the regex we can build using **character classes**.
+
+
 ![CheatSheet](./Images/01_cheatSheet.png)
+
+
+
+## Quantifiers
+
+**Quantifiers** are symbols to specify a certain number of repetitions of characters., group or classes of characters to retrieve in a string of chracters.
+
+
+_Examples_:
+- * to detect if an expression is present 0,1 or multiple times. -> cha*t to detect cht, chat, chaat, chaaaat... (equivalent to {0,})
+- + to detect if an expression is present 1 or more times -> cha+t to detect chat, chaat, chaaaat... (equivalent to {1,})
+- ? to detect if an epxression is present 0 or 1 -> cha?t to detect cht, chat.(equivalent to {0,1})
+- {n} to detect an exact number of repetition. -> cha{2}t to detect chaat. 
+- {n,} to detect at least n repetition. -> cha{2,}t to detect chaat, chaaat, chaaaat...
+- {n,m} to detect n times but no more than m times. -> cha{1,3}t to detect chat, chaat, chaaat
+
+
+All those quantifiers can be applied on class characters like ch[a-z]?t to detect cht, chat, chbt, chct...chzt
+
+_Example_
+
+- Compile a regex to detect numbers in txt.
+
+```python
+txt = "J'habite au 137 bd Auguste Blanqui, au 12ème étage"
+
+### Insérez votre code
+r = re.compile(r"[0-9]+")
+r.findall(txt)
+
+>>>['137','12']
+```
+As I did in my first attempt, using * instead + will also returns the spaces.
+
+- Compile a regex to find 3 digits numbers
+
+```python
+r = re.compile("[0-9]{3,}")
+r.findall(txt)
+>>>['137']
+
+```
+
+Here a list of shortcuts
+
+
+![ShortCuts](./Images/01_shortcuts_regex.png)
+
