@@ -225,3 +225,23 @@ print("Pour txt, o([a-z]) détecte ", re.findall(r"o([a-z])",txt))
 
 Have a look to regex101.com to check your regex.
 
+## Quantifiers: Greedy vs Lazy
+
+Greedy will return all the results of the research because it will look after all of them, whereas the lazy one will stop the research after finding one.
+
+
+To go from greedy to lazy we place a ? after the quantifer.
+
+![Quantifiers](./Images/01_quantifiers.png)
+
+_Example_:
+
+```python
+r1 = re.findall(r"s.*o", 'stackoverflow')
+r2 = re.findall(r"s.*?o", 'stackoverflow')
+print(r1)
+print(r2)
+
+>>>['stackoverflo']
+['stacko']
+```
