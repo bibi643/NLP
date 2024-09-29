@@ -200,8 +200,87 @@ How to use it?
 - vectorizer.vocabulary_ to obtains the tokens numerated
 - vectorizer.transform(['une nouvelle phrase']).toarray() to display the vector representation of a new phrase.
 
+![CountVectorizer](./Images/CountVectorizer.png)
+
+- Initialiser vectorizer, en utilisant la méthode CountVectorizer.
+
+- Convertir les chaînes de caractères, à l'aide de la méthode fit_transform de l'objet vectorizer, en tokens.
+
+- Récupérer les tokens numérotés.
+
 
 
 
 ```python
+#Importer le package nécessaire
 from sklearn.feature_extraction.text import CountVectorizer
+
+# Créer un vectorisateur
+vectorizer = CountVectorizer()
+
+# Appliquer Bag of words à la variable tokens
+vectorizer.fit_transform(tokens)
+
+# Récupération des tokens
+tokenized = vectorizer.vocabulary_
+print(tokenized)
+
+>>> #Importer le package nécessaire
+
+from sklearn.feature_extraction.text import CountVectorizer
+
+​
+
+# Créer un vectorisateur
+
+vectorizer = CountVectorizer()
+
+​
+
+# Appliquer Bag of words à la variable tokens
+
+vectorizer.fit_transform(tokens)
+
+​
+
+# Récupération des tokens
+
+tokenized = vectorizer.vocabulary_
+
+print(tokenized)
+
+​
+
+{'souffrez': 12, 'amour': 2, 'cette': 3, 'nuit': 9, 'vous': 15, 'réveille': 11, 'soupirs': 13, 'laissez': 7, 'enflammer': 6, 'dormez': 4, 'trop': 14, 'adorable': 0, 'merveille': 8, 'dormir': 5, 'point': 10, 'aimer': 1}
+```
+
+This representation can be the following, where each word is assgined an index
+
+![CountVectorizer](./Images/vector.png)
+
+
+```python
+
+print(vectorizer.transform(["laissez-vous enflammer","Dormez vous cette nuit ?"]).toarray())
+
+>>> print(vectorizer.transform(["laissez-vous enflammer","Dormez vous cette nuit ?"]).toarray())
+
+​
+
+[[0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 1]
+ [0 0 0 1 1 0 0 0 0 1 0 0 0 0 0 1]]
+
+```
+
+Those arrays means, 0 the word is not present in our   indexed result and 1 it is. So we see the first phrase has one word which is the 7th indexed in our vecotizer which is Laissez and the 16th is vous and the 6th is enflammer. So we know we have enflammer, laissez and vous. but we dont know the order.
+
+
+```python
+print(vectorizer.transform(["Dormez vous vous cette nuit ?"]).toarray())
+
+[[0 0 0 1 1 0 0 0 0 1 0 0 0 0 0 2]]
+```
+This shows that this function returns the **frequence** of each words!!!.
+
+## TF-IDF
+
