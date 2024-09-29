@@ -72,4 +72,4 @@ r.findall(txt)
 
 ![Alt text](./Images/01_character_classes.png)
 
-![CheatSheet](01_cheatSheet.png)
+![CheatSheet](./Images/01_cheatSheet.png)
