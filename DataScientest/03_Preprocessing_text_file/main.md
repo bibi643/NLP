@@ -304,3 +304,130 @@ vectorizer.vocabulary_
 # to display the vectorial representation of a new phrase
 vectorizer.transform(['une nouvelle phrase']).to_array()
 ```
+
+![TFIDF](./Images/TF_IDF.png)
+
+- Importer la classe TfidfVectorizer du package sklearn.feature_extraction.text.
+
+- Initialiser vectorizer_tfidf, en utilisant la méthode TfidfVectorizer.
+
+- Convertir les chaînes de caractères, à l'aide de la méthode fit_transform de l'objet vectorizer_tfidf, en tokens.
+
+- Récupérer les tokens numérotés.
+
+```python
+
+#Importer le package nécessaire
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+# Créer un vectorisateur
+vectorizer_tfidf = TfidfVectorizer()
+
+# Appliquer Bag of words à la variable tokens
+vectorizer_tfidf.fit_transform(tokens)
+ 
+# Récupération des tokens
+tokenized_tfidf = vectorizer_tfidf.vocabulary_
+print(tokenized_tfidf)
+
+
+
+{'souffrez': 12, 'amour': 2, 'cette': 3, 'nuit': 9, 'vous': 15, 'réveille': 11, 'soupirs': 13, 'laissez': 7, 'enflammer': 6, 'dormez': 4, 'trop': 14, 'adorable': 0, 'merveille': 8, 'dormir': 5, 'point': 10, 'aimer': 1}
+```
+
+```python
+print(vectorizer_tfidf.transform(["laissez-vous enflammer", "Dormez vous cette nuit ?"]).to-array())
+
+
+
+[[0.         0.         0.         0.         0.         0.
+  0.61791199 0.61791199 0.         0.         0.         0.
+  0.         0.         0.         0.48617852]
+ [0.         0.         0.         0.52565601 0.52565601 0.
+  0.         0.         0.         0.52565601 0.         0.
+  0.         0.         0.         0.41359071]]
+
+```
+
+In this array wwe can see if a word is present or not but also the specificity score of the word. The higher this number is the more specific the word is for this sentence based on the context etc etc...
+
+As said earlier the order of the word is not in this representation. So **bag of words** cannot be used for **syntaxic approach**. To finish our prepropressing, it is usually performed a ** lexical normalisation** of the obtained words to group them and make it prepared for tasks such as:
+- comparison
+- analysis
+
+  For this we use **racinisation or lemmatisation**
+
+  # Racinisation/Stemming
+  Stemming is a technique to transform a word into its radical or root/stem. The stem of a word is what is remaining after striping the pre/suffix. So sometimes it is smart to group together words with the same stem.
+  The library **NLTK** has the algorithm _stemming_:
+  - porter_stemmer= FrenchStemmer()
+  - racine = porter_stemmer.stem(word)
+
+
+ _Example_:
+ ```
+from nltk.stem.snowball import FrenchStemmer
+stemmer = FrenchStemmer()
+racine = stemmer.stem('sérieusement')
+
+racine
+>>> serieux
+```
+
+
+Example
+- Définir une fonction stemming qui retrouve la racine pour chaque mot de mots, une liste (de mots) passée en paramètre.
+
+- Faire en sorte que la fonction ne renvoie aucun doublon.
+
+-
+- Appliquer la fonction stemming à la variable tokens.
+
+```python
+def stemming(liste):
+    radical = []
+    for word in liste:
+        stem = stemmer.stem(word)
+        if stem not in radical:
+            radical.append(stem)
+            
+    return radical
+
+liste= ['Bonjour', 'Saint','Compote','Sainte']
+radical=stemming(liste)
+radical
+
+>>>['bonjour', 'saint', 'compot']
+```
+
+# Lemmatisation
+This is a similar technique to stemming but more advanced. It transform a word into their lemma (from the street, the usage of the people, let's say this). 
+
+How to use it:
+- wordnet_lemmatizer = WordNetLemmatizer()
+- wordnet_lemmatizer.lemmatize('meeting',pos='v')
+
+As you can see it works similarly as the stemming but with an extra argument. pos specify if the word to lemmatize is a verb ('v') or a noun ('n')
+
+
+
+```python
+# Importer le package nécessaire
+from nltk.stem import WordNetLemmatizer
+
+# Initialiser un lemmatiseur
+wordnet_lemmatizer = WordNetLemmatizer()
+
+#Calculer le lemme du mot meeting
+wordnet_lemmatizer.lemmatize('meeting', pos='v'), wordnet_lemmatizer.lemmatize('meeting', pos='n')
+
+>>> ('meet','meeting')
+```
+
+# Conclusion
+
+We saw hre
+- **Tokenisation**, aka segmentation in tokens.
+- **filtering using  stopwords**
+- The algorithm **Bag of words** to represent in a vector way the documents using **CountVectorizer** or **TF-IDF** to calculate word frequency.
+- Lexical Normalisation to put some harmony  and group words by their stemm or lemma.
