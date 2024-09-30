@@ -283,4 +283,24 @@ print(vectorizer.transform(["Dormez vous vous cette nuit ?"]).toarray())
 This shows that this function returns the **frequence** of each words!!!.
 
 ## TF-IDF
+While CountVectorizer is focus only on the raw frequency of the words, **TF-IDF** introduces a notion of weight taking in count the frequency and the rarity  in the whole corpus. The **TF-IDF can be defined as the product of 2 scores measuring the importance of a word in a text.
 
+**TF-IDF**(i,j) = **TF**(i,j)x **IDF**(i)
+- TF: Term Frequency, the score represents the frequency of appearence of a word in a sentence.
+- IDF: Inverse Document Frequency, the score reprensents the specificity of a word in the corpus of a texts.
+
+This method is implemented by the class **tfidfVectorizer** from the package **sklearn.feature_extraction.text and implement the formula above.
+How to use it:
+```python
+# Initialize the vectorizer
+vectorizer = TfidfVectorizer()
+
+# Apply the numerating algorithm
+tokens = vectorizer.fit_transform(string)
+
+# Retrieve the tokens_numbered
+vectorizer.vocabulary_
+
+# to display the vectorial representation of a new phrase
+vectorizer.transform(['une nouvelle phrase']).to_array()
+```
