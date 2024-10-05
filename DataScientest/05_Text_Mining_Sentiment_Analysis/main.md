@@ -340,6 +340,7 @@ This is even better
 # StopWords and Regex
 
 To go even further we can do one last thing. Dealing with stopwords and regex to filter useless words.
+```python
 
 df['Text'].head(20)
 
@@ -364,6 +365,8 @@ df['Text'].head(20)
 18           * brokeback mountain is an awesome movie..
 19                      * dies * I love Harry Potter...
 
+```
+
 We can see here words like 
 - connectors: and, so..
 - special characters: , <>, @
@@ -372,10 +375,166 @@ We can see here words like
 
 
 Because stopwords and regex are cxase sensitive we put everything in lower case.
+```python
 
 #On met le texte en minuscule
 df["Text"] = df["Text"].str.lower()
 df["Text"].head()
+
+```
+To apply stopwrds we need to split sentences in a list of words, using word_tokenize directly on the coprus
+
+```python
+#Importer le package pour la tokenization
+from nltk.tokenize import word_tokenize
+
+df["Text"] = df["Text"].apply(word_tokenize)
+df.head()
+
+ 	                            Text 	                    Sentiment
+0 	[Brokeback, Mountain'is, so, beautiful, ,, and... 	1
+1 	[I, liked, Harry, Potter, and, I, 'll, be, sor... 	1
+2 	[The, Da, Vinci, Code'it, was, AWESOME, .] 	        1
+3 	[and, i, love, brokeback, mountain, ...] 	          1
+4 	[but, I, LOVE, brokeback, mountain, .] 	            1
+
+```
+
+We can use now stopwords. We will use the english stopwords
+
+```python
+# Importer stopwords de la classe nltk.corpus
+from nltk.corpus import stopwords
+
+# Initialiser la variable des mots vides
+stop_words = set(stopwords.words('english'))
+print(stop_words)
+```
+
+We will add more stopwrods to the set using **update** and then apply the function stop_words_filtering we created in a previous notebook.
+
+```python
+new_stop_words = [",", ".", "``", "@", "*", "(", ")", "...", "!", "?", "-", "_", ">", "<", ":", "/", "=", "--", "©", "~", ";", "\\", "\\\\"]
+
+#Ajouter à la liste des stopwords des éléments de syntaxe que nous avons repéré et qui ne servent pas à l'analyse du texte
+stop_words.update(new_stop_words)
+
+#Définir la fonction stop_words_filtering
+def stop_words_filtering(mots) : 
+    tokens = []
+    for mot in mots:
+        if mot not in stop_words:
+            tokens.append(mot)
+    return tokens
+
+df["Text"] = df["Text"].apply(stop_words_filtering)
+df['Text'].head()
+
+rokeback, Mountain'is, beautiful, amazing, f...
+1    [I, liked, Harry, Potter, I, 'll, sorry, see, ...
+2                   [The, Da, Vinci, Code'it, AWESOME]
+3                          [love, brokeback, mountain]
+4                       [I, LOVE, brokeback, mountain]
+Name: Text, dtype: object
+
+```
+
+Now we need to join everything together
+```python
+#Reconstitution des phrases après la tokenization
+for i in range (0, len(df['Text'])):
+    df.loc[i, 'Text'] = ' '.join(df.loc[i, 'Text'])
+
+df['Text'].head()
+
+0    Brokeback Mountain'is beautiful amazing freaki...
+1            I liked Harry Potter I 'll sorry see grow
+2                         The Da Vinci Code'it AWESOME
+3                              love brokeback mountain
+4                            I LOVE brokeback mountain
+Name: Text, dtype: object
+
+```
+
+
+There are still some parasites like ..., numbers... We will delete all these using regex.
+
+
+
+```python
+#Importer le package re
+import re
+
+#Regex pour tous les '.', '..', '...', ...
+for i in range (0, len(df['Text'])):
+    df.loc[i, 'Text'] = re.sub(r"\.+", '', df.loc[i, 'Text'])
+
+#Regex pour tous les chiffres et nombres
+for i in range (0, len(df['Text'])):
+    df.loc[i, 'Text'] = re.sub(r"[0-9]+", '', df.loc[i, 'Text'])
+
+#Vérification que tous les éléments qu'on a voulu enlever ont bien été enlever du dataframe
+filtered = [i for i in df['Text']]
+print(filtered)
+
+```
+
+And here we go again like before, vecotrizing etc etc etc..
+
+```python
+# Séparer la variable explicative de la variable à prédire
+X_vf, y_vf = df.Text, df.Sentiment
+
+#Pour effectuer la lemmatisation on sépare les phrase pour on les rassemble
+X_vf = X_vf.str.split()
+
+for i in range (0, len(X_vf)):
+    X_vf[i] = lemmatisation(X_vf[i])
+    X_vf[i] = ' '.join(X_vf[i])
+
+# Séparer le jeu de données en données d'entraînement et données test 
+X_train_vf, X_test_vf, y_train_vf, y_test_vf = train_test_split(X_vf, y_vf, test_size=0.2, random_state = 30)
+
+vec_vf = TfidfVectorizer()
+
+# Mettre à jour la valeur de X_train_vf et X_test_vf
+X_train_vf = vec_vf.fit_transform(X_train_vf)
+X_test_vf = vec_vf.transform(X_test_vf)
+
+
+
+# Créer un classificateur clf_vf et entraîner le modèle sur l'ensemble d'entraînement
+clf_vf = GradientBoostingClassifier(n_estimators=100, learning_rate=1.0, max_depth=1, random_state=0).fit(X_train_vf, y_train_vf)
+
+# Calculer les prédictions 
+y_pred_vf = clf_vf.predict(X_test_vf)
+
+
+# Calcul et affichage de classification_report
+print(classification_report(y_test_vf, y_pred_vf) )
+
+# Calcul et affichage de la matrice de confusion
+conf_matrix_vf = pd.crosstab(y_test_vf, y_pred_vf, rownames=['Classe réelle'], colnames=['Classe prédite'])
+conf_matrix_vf
+```
+
+
+
+# Conclusion
+
+Nous avons pu mettre en application dans un problème de Machine Learning les différents aspects abordés dans le module 131 Text Mining, à savoir la prédiction de sentiment avec le modèle de Gradient Boosting à l'aide de :
+
+- l'algorithme Bag of Words avec le CountVectorizer
+- l'algorithme Bag of Words avec le TF-IDF
+- le regroupement de famille de mots selon leur racine avec la racinisation, ou stemming
+- le regroupement de famille de mots selon leur lemme avec la lemmatisation
+- la suppression des stopwords
+- la suppression des regexs
+
+    Les modèles basés sur l'algorithme Bag of Words sont aujourd'hui les plus fondamentaux dans le Traitement Automatique du Langage Naturel (ou Natural Language Processing en anglais). Pour aller plus loin sur les possibilités d'analyse et de traitement de texte, une autre méthode d'apprentissage, le **Word Embedding, est également exploitée pour le Traitement Automatique du Langage Naturel et est capable de capturer le contexte, la similarité sémantique et syntaxique (genre, synonymes, ...) d'un texte**. On peut ainsi imaginer des pistes d'améliorations supplémentaires pour nos prédictions sur l'analyse de sentiments.
+
+
+
 
 
 
