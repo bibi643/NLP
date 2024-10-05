@@ -34,4 +34,4 @@ import seaborn as sns
 sns.countplot(x=df['Sentiment'])
 ```
 
-![balanced_dataSet](countplot.png)
+![balanced_dataSet](./Images/countplot.png)
