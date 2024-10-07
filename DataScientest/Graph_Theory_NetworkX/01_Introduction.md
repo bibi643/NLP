@@ -111,6 +111,14 @@ G.add_node(1, name='Daniel', role= 'Support')
   G.add_nodes_from([2,3],role='mentor')
   ```
 
-- **nx.path_graph(n)**: to generate a graph with a shape of path composed of n nodes. Nodes are numbered sequentially from 0 to n-1 and are connected by the tensors. If we want to retrieve the nodes 
+- **nx.path_graph(n)**: to generate a graph with a shape of path composed of n nodes. Nodes are numbered sequentially from 0 to n-1 and are connected by the tensors. If we want to retrieve the nodes of this path we use as before the method **add_nodes__from()**. If tensors have to be kept, the method **nx.compose(G,path)** combines the path with the graph G fusionning the nodes and the tensors.
+
+'''python 
+chemin = nx.path_graph(10) # Create a path of 10 nodes
+G = nx.compose(G, chemin) # fuse chemin and G
+'''
+
+_Note_: It is possible to retrieve the list of neighbour nodes of a specific nodes n, using **list(G.adj[n])**
+
 - 
 
