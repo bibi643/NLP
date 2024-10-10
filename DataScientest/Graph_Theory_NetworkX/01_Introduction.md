@@ -197,4 +197,125 @@ _Note_: When we delete a node, we also delete all the tensors from it.
 
 ## Accessors and characteristic of a graph
 
-We have created complete grpahs, but sometimes we need to access information of the graph
+We have created complete grpahs, but sometimes we need to access information of the graph. NetworkX has a list of functions to consult properties of a graph aka accessors. For example, G.nodes or G.edges give us access directly to the nodes and edges and to their attributes.
+
+```python
+list(G1.nodes)
+G1.nodes[1] # show all the attributes of the node 1
+G1.nodes(data=True) # show the attributes of all nodes.
+```
+
+We can have access to the structure of the graph using 
+
+- G.number_of_nodes()
+- G.number_of_edges()
+
+
+```python
+list(G1.nodes)
+list(G1.edges)
+
+
+G1.nodes(data=True)
+G1.edges(data=True)
+
+>>> EdgeDataView([(0, 1, {}), (0, 12, {}), (1, 2, {}), (2, 3, {}), (4, 3, {}), (7, 8, {}), (10, 9, {}), (10, 11, {}), (10, 12, {}), (11, 12, {}), (8, 9, {})])
+```
+
+We can see here the list of edges with their attributes {}.
+
+_Example 2_:
+
+```python
+
+# Récupère la liste des noeuds, attributs et arêtes
+print("Les noeuds de G1 sont : ", list(G1.nodes(data=True)))
+print("Les arêtes de G1 sont : ",list(G1.edges))
+
+>>>
+Les noeuds de G1 sont :  [(0, {}), (1, {}), (2, {}), (4, {}), (5, {}), (6, {}), (7, {'weight': '2'}), (10, {'color': 'blue'}), (11, {'color': 'blue'}), (12, {'color': 'blue'}), (3, {}), (8, {}), (9, {})]
+Les arêtes de G1 sont :  [(0, 1), (0, 12), (1, 2), (2, 3), (4, 3), (7, 8), (10, 9), (10, 11), (10, 12), (11, 12), (8, 9)]
+
+```
+We can see here some attributes.
+
+
+## Degrees of a node
+
+Degree of a node is the number of times this nodes is touched by edges. In other words, this means the number of neighboors direclty connected to the node. If a node is connected to 5 others, thie degree is 5.
+
+To obtaint the degree of a specific node s in a graph G we use the method **degree** as **G.degree[s]**
+
+In a non oriented graph, the degree of a node is simply the number of edges touching it, whereas in an oriented grpah, we distinguish between in_degree(edges going **to** this node) and out_degree(edges from this node) -> deg(u)= deg(u)+ + deg(u)-
+
+```python
+G.in_degree[s]
+G.out_degree[s]
+G1.degree[12] # degree of the node 12. Recall G1 is non oriented Graph
+
+>>>3
+
+```
+
+## Visualisation des graphs
+
+The visualisation is super important because we can understand quickly the strucutre and relationship inside of the graph. 
+**nx.draw_networkx()** to represent nodes and edges.
+
+We have plenty of options to play with:
+- pos: layout function to determine distances and positions of the nodes following a specific shape like
+-- nx.circular_layout: nodes are placed in a circle shape
+-- nx.spring_layout: default
+-- nx.shell_layout: nodes a placed as a shell shape.
+-- nx.random_layout; nodes are randomly placed
+-- nx.planar_layout: nodes are placed without any intersections
+
+- node.size, node.color: control the size and the color of the nodes
+- edge_color: Define the color of the edges.
+- with_labels: if True, nodes are labeled with their labels.
+- font_size, font_color: custom the size and the color of the label of the nodes.
+
+
+```python
+  G = nx.path_graph(5)
+pos= nx.spring_layout(G, k = 0.5)
+nx.draw_networkx(G, pos, with_labels =True, node_color = 'skyblue')
+
+  ```
+
+
+```python
+# Liste des layouts à utiliser
+layouts = {
+    "Circular Layout": nx.circular_layout,
+    "Spring Layout": nx.spring_layout,
+    "Shell Layout": nx.shell_layout,
+    "Random Layout": nx.random_layout,
+    "Planar Layout": nx.planar_layout
+}
+
+# Paramètres d'affichage du graphe G
+options = {
+    'node_color': 'skyblue',
+    'edge_color': 'gray',
+    'node_size': 500,
+    'width': 2,
+    'with_labels': True,
+    'font_weight': 'bold'
+}
+
+# Affichage des graphes avec différents layouts
+plt.figure(figsize=(15, 10))
+
+for i, (name, layout) in enumerate(layouts.items(), start=1):
+    plt.subplot(2, 3, i)
+    nx.draw(G1, pos=layout(G1), **options)
+    plt.title(name)
+
+plt.tight_layout()
+plt.show()
+```
+
+
+![Layout Graphs](layout_graphs.png)
+
