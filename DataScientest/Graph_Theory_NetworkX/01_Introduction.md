@@ -27,7 +27,7 @@ Some real case use are:
 - Non-Oriented graphs: Tensors are not oriented. If there is a tensor between A and B, it means A is connected to B AND B is connected to A.
 - Oriented graphs: Tensors are oriented. This means A is connected to B but B is not connected to A. Sometimes tensors can have weights representing the force of the relation, distance and cost...
 
-![Type of Graphs](Oriented_NonOriented_graphs.jpeg)
+![Type of Graphs](Images/Oriented_NonOriented_graphs.jpeg)
 
 
 From a mathematical pov, we can define a graph G as:
@@ -79,7 +79,7 @@ nx.draw_networkx(G,font_color="white") # affichage du graphe
 
 plt.show()
 ```
-![Graphs](graph_NetwrokX.png)
+![Graphs](Images/graph_NetwrokX.png)
 
 
 We can see
@@ -143,6 +143,7 @@ nx.draw(G1, with_labels=True, font_color='black', node_size=500, node_color='#75
 plt.show()
 
 ```
+![Nodes](Images/twelve_nodes.png)
 
 ## Add Tensors/spines to the graphs.
 
