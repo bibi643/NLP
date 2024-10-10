@@ -317,5 +317,5 @@ plt.show()
 ```
 
 
-![Layout Graphs](layout_graphs.png)
+![Layout Graphs](Images/layout_graphs.png)
 
