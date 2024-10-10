@@ -120,5 +120,81 @@ G = nx.compose(G, chemin) # fuse chemin and G
 
 _Note_: It is possible to retrieve the list of neighbour nodes of a specific nodes n, using **list(G.adj[n])**
 
-- 
+_Example_: Add 12 nodes to the graph
 
+```python
+# Utilisation de path_graph pour générer un graphe en forme de chemin et l'ajouter à G1
+H = nx.path_graph(3)
+G1 = nx.compose(G1, H) # combine les 2 graphes pour conserver le chemin H
+
+# Utilisation de add_node pour ajouter un nœud unique avec des attributs
+G1.add_node(4)
+G1.add_node(5)
+G1.add_node(6)
+G1.add_node(7, weight="2")
+G1.add_node(print)
+G1.add_node("Daniel")
+
+# Utilisation de add_nodes_from pour ajouter plusieurs nœuds avec un attribut commun
+G1.add_nodes_from([10, 11, 12], color='blue')
+
+# Visualisation du graphe
+nx.draw(G1, with_labels=True, font_color='black', node_size=500, node_color='#75DFC1') 
+plt.show()
+
+```
+
+## Add Tensors/spines to the graphs.
+
+We need now to connect the nodes of the graph. In NetworkX a tensor or spine is define by a **pair of nodes**, and as nodes, tensors can have attributes.
+- The method G.add_edge(u,v,attr): add a unique tensor between the nodes u, v to the graph G. The optional argument att defines the attributes for the tensor as key/value.
+
+```python
+G.add_edge(1,2, weight =4) # tensor linking the nodes 1,2, with a weight of 4.
+```
+
+- The method G.add_edges_from(edge_list,attr): add several tensors simultaneously to the graph G  from a list of tensors.
+
+```python
+G.add_edges_from([(2,3),(3,4)]) # tensors connecting the node 2 to 3 and 3 to 4.
+```
+
+_Note_: It is not necessary to create nodes before connecting it. NetworkX will handle it automatically.
+
+```python
+edge_list = [(2, 3), (3, 4), (8, 7), (6, "Daniel"),(print,5), (8, 9), (9, 10), (10, 11), (11, 12), (10, 12), (12, 0)]
+G1.add_edges_from(edge_list)
+
+nx.draw(G1, with_labels=True, font_color='black', node_size=500, node_color='#75DFC1') 
+plt.show()
+```
+
+
+## Delete a node
+
+- The method G.remove_node(n) and G.remove_nodes_from(node_list) to delete a nodes and a list of nodes in the graph G.
+
+```python
+G.remove_node(1)
+G.remove_nodes_from([2,3]) # delete the nodes 2 and 3.
+```
+
+- The methods G.remove_edge(u,v) and G.remove_edges_from(edge_list) are used to delete a tensor and a list of tensor of the graph G.
+
+```python
+G.remove_edge(1,2)
+G_remove_edges_from([(2,3),(3,4)]) # delete the tensors (2,3) and (3,4)
+```
+
+- The method G.clear() delete all the nodes and tensors of a graph.
+
+
+_Note_: When we delete a node, we also delete all the tensors from it.
+
+
+
+
+
+## Accessors and characteristic of a graph
+
+We have created complete grpahs, but sometimes we need to access information of the graph
