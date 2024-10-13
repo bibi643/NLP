@@ -235,4 +235,4 @@ print("Parcours en profondeur à partir du nœud 1:", dfs_nodes)
 >>>Parcours en largeur à partir du nœud 1: ['1', '0', '2', '12', '3', '10', '11', '4', '9', '8', '7']
 Parcours en profondeur à partir du nœud 1: ['1', '0', '12', '10', '9', '8', '7', '11', '2', '3', '4']
 ```
-![BFS & DFS](Images/bfs_tfs.png)
+![BFS & DFS](Images/bfs_dfs.png)
